@@ -1,0 +1,23 @@
+# Dependências
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build e Testes
+dist/
+coverage/
+.nest/
+
+# Variáveis de Ambiente (CRÍTICO)
+.env
+.env.*
+!.env.example
+
+# Configurações de IDE e SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
