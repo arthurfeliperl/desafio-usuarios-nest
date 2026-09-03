@@ -1,8 +1,8 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { User } from './entities/user.entity';
+import { User } from './entities/user.entity.js';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto.js';
 
 @Injectable()
 export class UserService {
@@ -12,7 +12,7 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    // 1. Evita e-mails duplicados
+    // evita e-mails duplicados
     const userExists = await this.userModel.findOne({
       where: { email: createUserDto.email },
     });
@@ -21,20 +21,22 @@ export class UserService {
       throw new BadRequestException('Este email já está em uso.');
     }
 
-    // 2. Hash da senha
+    //hash da senha
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(createUserDto.password, saltRounds);
 
-    // 3. Salva no banco substituindo a senha original pelo hash
+    // salva no banco substituindo a senha original pelo hash
     const newUser = await this.userModel.create({
       ...createUserDto,
       password: hashedPassword,
     });
 
-    // 4. Converte para JSON e remove a senha antes de devolver pro Postman
+    //converte para JSON e remove a senha antes de devolver pro Postman
     const userResponse = newUser.toJSON();
     delete userResponse.password;
 
     return userResponse;
   }
 }
+
+//TODO pesquisar sobre o decorator Exclude do class-transformer

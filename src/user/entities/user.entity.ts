@@ -1,6 +1,6 @@
 import {Column, DataType, Model, Table} from "sequelize-typescript";
 
-@Table({tableName: 'users',timestamps: true, paranoid: true})
+@Table({tableName: 'Users',timestamps: true, paranoid: true})
 export class User extends Model {
     @Column({
         type: DataType.STRING,
@@ -26,3 +26,5 @@ export class User extends Model {
     })
     password: string;
 }
+
+//TODO: underscored true ver se é necessario para separar as colunas com underline 
