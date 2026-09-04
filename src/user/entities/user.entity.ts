@@ -6,25 +6,25 @@ export class User extends Model {
         type: DataType.STRING,
         allowNull: false,
     })
-    name: string;
+    declare name: string;
 
     @Column({
         type: DataType.STRING,
         allowNull: false,
     })
-    email: string;
+    declare email: string;
 
     @Column({
         type: DataType.STRING,
         allowNull: false,
     })
-    phone: string;
+    declare phone: string;
 
     @Column({
         type: DataType.STRING,
         allowNull: false,
     })
-    password: string;
+    declare password: string;
 }
 
 //TODO: underscored true ver se é necessario para separar as colunas com underline 
