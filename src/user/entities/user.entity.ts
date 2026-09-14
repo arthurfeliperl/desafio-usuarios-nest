@@ -27,4 +27,3 @@ export class User extends Model {
     declare password: string;
 }
 
-//TODO: underscored true ver se é necessario para separar as colunas com underline 

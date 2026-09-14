@@ -10,6 +10,7 @@ export class UserService {
   constructor(
     @InjectModel(User)
     private userModel: typeof User,
+    
   ) {}
 
   private sanitize(user: User) {
@@ -91,4 +92,10 @@ export class UserService {
 
     return { message: 'Usuário removido com sucesso.' };
   }
+  
+  async findByEmailForAuth(email: string) {
+    return this.userModel.findOne({
+      where: { email },
+    });
+}
 }
