@@ -1,4 +1,5 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import { Column, DataType, Model, Table } from "sequelize-typescript";
+
 
 @Table({tableName: 'Users',timestamps: true, paranoid: true})
 export class User extends Model {
@@ -26,4 +27,5 @@ export class User extends Model {
     })
     declare password: string;
 }
+
 

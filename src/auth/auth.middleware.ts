@@ -2,37 +2,37 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  NestMiddleware,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+export class AuthMiddleware implements NestMiddleware {
+  constructor(private jwtService: JwtService) { }
+  async use(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const token = this.extractTokenFromHeader(req);
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
-    
     if (!token) {
       throw new UnauthorizedException('Token não encontrado.');
     }
-    
+
     try {
-      // O payload decodificado será injetado no objeto request para uso nos controllers
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: 'autenticaçãodoJWT', // Lembre-se de usar a mesma string que colocou no auth.module.ts
       });
-      request['user'] = payload;
+      res.locals.user = payload;
+
     } catch {
       throw new UnauthorizedException('Token inválido ou expirado.');
+
     }
-    return true;
+    next();
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }
+
 }

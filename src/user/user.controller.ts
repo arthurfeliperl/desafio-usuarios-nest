@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { UserService } from './user.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
-import { AuthGuard } from '../auth/auth.guards.js';
+import { AuthMiddleware } from '../auth/auth.middleware.js';
 
 @Controller('Users')
 export class UserController {
@@ -12,24 +12,24 @@ export class UserController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthMiddleware)
   @Get()
   findAll() {
     return this.userService.findAll();
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthMiddleware)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthMiddleware)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
-@UseGuards(AuthGuard)
+@UseGuards(AuthMiddleware)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
