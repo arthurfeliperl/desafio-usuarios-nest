@@ -13,7 +13,7 @@ export class LikeService {
     });
 
     if (likeExistente) {
-      return likeExistente; 
+      return likeExistente;
     }
 
     return this.likeModel.create({
@@ -31,10 +31,10 @@ export class LikeService {
     const like = await this.likeModel.findOne({
       where: { postId, userId },
     });
-    
+
     if (!like) throw new NotFoundException('Curtida não encontrada');
 
-    await like.destroy(); 
+    await like.destroy();
     return { message: 'Curtida removida com sucesso' };
   }
 }

@@ -9,7 +9,7 @@ import { AuthMiddleware } from './auth.middleware.js';
   imports: [
     UserModule,
     JwtModule.register({
-      secret: 'autenticaçãodoJWT', // 
+      secret: 'autenticaçãodoJWT', //
       signOptions: { expiresIn: '1d' },
       global: true,
     }),
@@ -22,13 +22,10 @@ export class AuthModule {
     const exclude = (path: string) => ({
       path,
       method: RequestMethod.POST,
-    })
+    });
     consumer
       .apply(AuthMiddleware)
-      .exclude(
-        exclude('auth/login'),
-        exclude('user'),
-      )
+      .exclude(exclude('auth/login'), exclude('Users'))
       .forRoutes('*');
   }
 }

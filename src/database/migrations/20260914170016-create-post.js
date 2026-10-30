@@ -21,3 +21,4 @@ module.exports = {
     await queryInterface.dropTable('Posts');
   },
 };
+//criar o recados tambem  

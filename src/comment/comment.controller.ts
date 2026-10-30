@@ -1,11 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+  UseInterceptors,
+} from '@nestjs/common';
 import type { Request } from 'express';
 import { CommentService } from './comment.service.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { UpdateCommentDto } from './dto/update-comment.dto.js';
 import { AuthMiddleware } from '../auth/auth.middleware.js';
+import { ErrorHandlingInterceptor } from '../interceptors/error-handling.interceptor.js';
+import { AddHeaderInterceptor, } from '../interceptors/add-header.interceptor.js';
 
-@Controller('comments') 
+@Controller('comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
@@ -14,7 +27,7 @@ export class CommentController {
   create(@Body() createCommentDto: CreateCommentDto, @Req() req: Request) {
     return this.commentService.create(createCommentDto, (req as any).user.sub);
   }
-
+  @UseInterceptors(ErrorHandlingInterceptor,AddHeaderInterceptor)
   @Get('post/:postId')
   findByPost(@Param('postId') postId: string) {
     return this.commentService.findByPost(+postId);
@@ -22,8 +35,16 @@ export class CommentController {
 
   @UseGuards(AuthMiddleware)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto, @Req() req: Request) {
-    return this.commentService.update(+id, updateCommentDto, (req as any).user.sub);
+  update(
+    @Param('id') id: string,
+    @Body() updateCommentDto: UpdateCommentDto,
+    @Req() req: Request,
+  ) {
+    return this.commentService.update(
+      +id,
+      updateCommentDto,
+      (req as any).user.sub,
+    );
   }
 
   @UseGuards(AuthMiddleware)

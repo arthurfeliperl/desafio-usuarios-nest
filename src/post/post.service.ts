@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { Post } from './entities/post.entity.js';
@@ -22,7 +26,8 @@ export class PostService {
       limit,
       include: [{ model: User, attributes: { exclude: ['password'] } }],
     });
-    const nextCursor = posts.length === limit ? posts[posts.length - 1].id : null;
+    const nextCursor =
+      posts.length === limit ? posts[posts.length - 1].id : null;
     return { data: posts, nextCursor };
   }
 
@@ -37,7 +42,9 @@ export class PostService {
   async update(id: string, dto: UpdatePostDto, userId: number) {
     const post = await this.findOne(id);
     if (post.userId !== userId) {
-      throw new ForbiddenException('Você não pode editar um post que não é seu');
+      throw new ForbiddenException(
+        'Você não pode editar um post que não é seu',
+      );
     }
     await post.update(dto);
     return post;
@@ -46,7 +53,9 @@ export class PostService {
   async remove(id: string, userId: number) {
     const post = await this.findOne(id);
     if (post.userId !== userId) {
-      throw new ForbiddenException('Você não pode remover um post que não é seu');
+      throw new ForbiddenException(
+        'Você não pode remover um post que não é seu',
+      );
     }
     await post.destroy();
     return { message: 'Post removido com sucesso' };

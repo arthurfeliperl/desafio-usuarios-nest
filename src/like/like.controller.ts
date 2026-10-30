@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Param, Delete, UseGuards, Req, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+  Get,
+} from '@nestjs/common';
 import type { Request } from 'express';
 import { LikeService } from './like.service.js';
 import { CreateLikeDto } from './dto/create-like.dto.js';

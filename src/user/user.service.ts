@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity.js';
 import * as bcrypt from 'bcrypt';
@@ -10,7 +14,6 @@ export class UserService {
   constructor(
     @InjectModel(User)
     private userModel: typeof User,
-    
   ) {}
 
   private sanitize(user: User) {
@@ -29,7 +32,10 @@ export class UserService {
     }
 
     const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(createUserDto.password, saltRounds);
+    const hashedPassword = await bcrypt.hash(
+      createUserDto.password,
+      saltRounds,
+    );
 
     const newUser = await this.userModel.create({
       ...createUserDto,
@@ -73,7 +79,10 @@ export class UserService {
 
     if (updateUserDto.password) {
       const saltRounds = 10;
-      updateUserDto.password = await bcrypt.hash(updateUserDto.password, saltRounds);
+      updateUserDto.password = await bcrypt.hash(
+        updateUserDto.password,
+        saltRounds,
+      );
     }
 
     await user.update(updateUserDto);
@@ -92,10 +101,10 @@ export class UserService {
 
     return { message: 'Usuário removido com sucesso.' };
   }
-  
+
   async findByEmailForAuth(email: string) {
     return this.userModel.findOne({
       where: { email },
     });
-}
+  }
 }

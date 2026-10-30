@@ -1,14 +1,17 @@
-import { PartialType } from "@nestjs/mapped-types";
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { PartialType } from '@nestjs/mapped-types';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreatePostDto {
-  @IsString() @IsNotEmpty()
+  @IsString()
+  @IsNotEmpty()
   titulo: string;
 
-  @IsString() @IsNotEmpty()
+  @IsString()
+  @IsNotEmpty()
   texto: string;
 
-  @IsOptional() @IsString()
+  @IsOptional()
+  @IsString()
   imagem?: string;
 }
 

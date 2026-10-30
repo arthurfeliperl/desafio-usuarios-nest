@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Comment } from './entities/comment.entity.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
@@ -24,9 +28,10 @@ export class CommentService {
 
   async update(id: number, updateCommentDto: UpdateCommentDto, userId: number) {
     const comment = await this.commentModel.findByPk(id);
-    
+
     if (!comment) throw new NotFoundException('Comentário não encontrado');
-    if (comment.userId !== userId) throw new ForbiddenException('Você não pode editar este comentário');
+    if (comment.userId !== userId)
+      throw new ForbiddenException('Você não pode editar este comentário');
 
     await comment.update(updateCommentDto);
     return comment;
@@ -34,9 +39,10 @@ export class CommentService {
 
   async remove(id: number, userId: number) {
     const comment = await this.commentModel.findByPk(id);
-    
+
     if (!comment) throw new NotFoundException('Comentário não encontrado');
-    if (comment.userId !== userId) throw new ForbiddenException('Você não pode apagar este comentário');
+    if (comment.userId !== userId)
+      throw new ForbiddenException('Você não pode apagar este comentário');
 
     await comment.destroy();
     return { message: 'Comentário removido com sucesso' };
